@@ -8,90 +8,108 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#ffffff; --fg:#111; --muted:#666; --gold:#C5A25E; --line:#eee;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;color:var(--fg);background:var(--bg);}
+    :root{ --bg:#ffffff; --fg:#111; --muted:#666; --gold:#C5A25E; --line:#eee; }
+    *{ box-sizing:border-box }
+    html,body{ height:100% }
+    body{ margin:0; font-family:Inter,system-ui,Arial,sans-serif; color:var(--fg); background:var(--bg); }
 
     /* Layout */
-    .container{width:min(92vw,720px);margin:0 auto}
-    section{padding:48px 0;border-top:1px solid var(--line)}
-    section:first-of-type{border-top:0}
+    .container{ width:min(92vw,720px); margin:0 auto }
+    section{ padding:48px 0; border-top:1px solid var(--line) }
+    section:first-of-type{ border-top:0 }
+    .container, section, .hero { text-align:center; }
 
     /* Typography */
-    h1,h2,h3{margin:0 0 16px;line-height:1.15}
-    h1{font-family:"Playfair Display",serif;font-weight:700;font-size:clamp(28px,7vw,44px)}
-    h2{font-family:"Playfair Display",serif;font-weight:700;font-size:clamp(22px,5.4vw,32px)}
-    .sub{color:var(--muted);font-size:clamp(14px,3.4vw,16px)}
-    .italic{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold)}
-    p{margin:12px 0 0; font-size:clamp(15px,3.8vw,17px); color:#222}
+    h1,h2,h3{ margin:0 0 16px; line-height:1.15 }
+    h1{ font-family:"Playfair Display",serif; font-weight:700; font-size:clamp(28px,7vw,44px) }
+    h2{ font-family:"Playfair Display",serif; font-weight:700; font-size:clamp(22px,5.4vw,32px) }
+    .sub{ color:var(--muted); font-size:clamp(14px,3.4vw,16px) }
+    .italic{ font-family:"Playfair Display",serif; font-style:italic; color:var(--gold) }
+    p{ margin:12px 0 0; font-size:clamp(15px,3.8vw,17px); color:#222 }
+    .section-title.themed{ font-family:"Playfair Display",serif; font-weight:700; color:var(--gold); letter-spacing:.4px }
 
-    /* Header hero */
-    .hero{padding:56px 0 40px}
-    .container, section, .hero { text-align: center; }
-    .names{font-size:clamp(30px,8.4vw,56px);font-family:"Playfair Display",serif;letter-spacing:.5px}
-    .names span{display:inline-block}
-    .amp{padding:0 .4ch;color:var(--gold)}
-    .meta{margin-top:8px;color:var(--muted);font-size:clamp(14px,3.6vw,17px)}
+    /* Header */
+    .hero{ padding:56px 0 40px }
+    .names{ font-size:clamp(30px,8.4vw,56px); font-family:"Playfair Display",serif; letter-spacing:.5px }
+    .names span{ display:inline-block }
+    .amp{ padding:0 .4ch; color:var(--gold) }
+    .meta{ margin-top:8px; color:var(--muted); font-size:clamp(14px,3.6vw,17px) }
 
-    /* Photo blocks */
+    /* Photos — без обрезки, высота по изображению */
     .photo{
-      position:relative; 
-      overflow:hidden; 
-      border-radius:18px; 
-      box-shadow:0 6px 24px rgba(0,0,0,.08);
-
-      /* фиксируем высоту */
-      height: 320px; /* на телефоне */
+      position:relative; overflow:hidden;
+      border-radius:18px; box-shadow:0 6px 24px rgba(0,0,0,.08);
+      background:#fafafa;
     }
     .photo img{
-  display:block;
-  width:100%;   /* по ширине телефона */
-  height:auto;  /* высота сама подстраивается */
-}
-
-    .photo:hover img{transform:scale(1.06)}
-    @media (min-width:900px){
-      .photo{height:480px;} /* на больших экранах выше */
+      display:block; width:100%; height:auto;
+      object-fit:contain;
+      transition:transform .6s ease;
     }
+    .photo:hover img{ transform:scale(1.01) }
 
     /* Countdown */
-    .count-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
-    .box{background:#fafafa;border:1px solid var(--line);border-radius:14px;padding:14px 8px;text-align:center}
-    .box .num{font-family:"Playfair Display",serif;font-size:clamp(22px,7vw,34px);font-weight:700}
-    .box .label{color:var(--muted);font-size:12px;margin-top:4px}
+    .count-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:18px }
+    .box{ background:#fafafa; border:1px solid var(--line); border-radius:14px; padding:14px 8px; text-align:center }
+    .box .num{ font-family:"Playfair Display",serif; font-size:clamp(22px,7vw,34px); font-weight:700 }
+    .box .label{ color:var(--muted); font-size:12px; margin-top:4px }
 
     /* Calendar */
-    .cal{margin-top:16px;border:1px solid var(--line);border-radius:16px;overflow:hidden}
-    .cal-head{display:flex;justify-content:center;align-items:center;padding:10px 14px;background:#fafafa;border-bottom:1px solid var(--line)}
-    .cal-title{font-weight:600}
-    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
-    .dow, .day{padding:10px 0;text-align:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px}
-    .cal-grid > :nth-child(7n){border-right:0}
-    .dow{background:#fcfcfc;color:#777;font-weight:600}
-    .day.empty{background:#fff}
-    .day .d{display:inline-block;min-width:2ch}
-    .day.mark{background:linear-gradient(180deg,#fff, #fff), #fff; position:relative}
-    .day.mark .d{background:var(--gold);color:#fff;border-radius:10px;padding:2px 8px;font-weight:700}
-
-    /* Quote / wishes */
-    .quote{font-size:clamp(18px,5.4vw,22px);line-height:1.5;color:#1a1a1a}
-    .sign{margin-top:16px;color:#333}
+    .cal{ margin-top:16px; border:1px solid var(--line); border-radius:16px; overflow:hidden }
+    .cal-head{ display:flex; justify-content:center; align-items:center; padding:10px 14px; background:#fafafa; border-bottom:1px solid var(--line) }
+    .cal-title{ font-weight:600 }
+    .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr) }
+    .dow, .day{ padding:10px 0; text-align:center; border-right:1px solid var(--line); border-bottom:1px solid var(--line); font-size:14px }
+    .cal-grid > :nth-child(7n){ border-right:0 }
+    .dow{ background:#fcfcfc; color:#777; font-weight:600 }
+    .day.empty{ background:#fff }
+    .day .d{ display:inline-block; min-width:2ch }
+    .day.mark .d{ background:var(--gold); color:#fff; border-radius:10px; padding:2px 8px; font-weight:700 }
 
     /* Reveal on scroll */
-    .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease, transform .7s ease}
-    .reveal.show{opacity:1;transform:none}
+    .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease }
+    .reveal.show{ opacity:1; transform:none }
 
-    /* Buttons */
-    .btn{display:inline-block;margin-top:14px;padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:#111;color:#fff;text-decoration:none;font-weight:600}
-    .btn.light{background:#fff;color:#111;border-color:#ddd}
+    /* === Локация: отдельный контейнер для карты/картинки === */
+    .map-section{ }
+    .route{ padding:8px 0 0; }
+    .route svg{ width:100%; height:140px; display:block; }
+    .route path{
+      fill:none; stroke:var(--gold); stroke-width:2.5;
+      stroke-linecap:round; stroke-linejoin:round;
+      stroke-dasharray:520; stroke-dashoffset:520;
+    }
+    .route.show path{ animation:dash 1.6s ease forwards; }
+    @keyframes dash{ to{ stroke-dashoffset:0; } }
+    .route .pin{ fill:var(--gold); opacity:0; transform:translateY(4px); }
+    .route.show .pin{ animation:pinFade .8s ease .9s forwards; }
+    @keyframes pinFade{ to{ opacity:1; transform:translateY(0); } }
 
-    /* Desktop tweaks */
-    @media (min-width:900px){
-      .container{width:min(84vw,980px)}
-      .count-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:start}
+    .map-card{
+      position:relative;
+      width:min(60%, 200px);    /* компактная карточка по центру */
+      aspect-ratio:4/3;
+      margin:12px auto 0;       /* выравнивание по центру */
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+      background:#fafafa;
+      box-shadow:0 6px 24px rgba(0,0,0,.06);
+      transition:transform .15s ease;
+      display:block;            /* чтобы margin: auto работал у <a> */
+    }
+    .map-card img{
+      display:block; width:100%; height:100%;
+      object-fit:cover;         /* скрин/фото карты заполнит карточку */
+    }
+    .map-card:hover{ transform:translateY(-1px) }
+    .map-card:active{ transform:translateY(0) }
+    .map-card::after{
+      content:'📍 Открыть на карте';
+      position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
+      padding:6px 10px; border-radius:10px;
+      background:rgba(17,17,17,.7); color:#fff; font-size:12px; font-weight:600;
+      box-shadow:0 4px 16px rgba(0,0,0,.2);
     }
   </style>
 </head>
@@ -104,7 +122,7 @@
 
   <section class="container reveal">
     <div class="photo">
-      <img loading="lazy" alt="Пара на предсвадебной фотосессии" src="first.jpeg" >
+      <img loading="lazy" alt="Пара на предсвадебной фотосессии" src="first.jpg">
     </div>
   </section>
 
@@ -117,8 +135,6 @@
         <div class="box"><div class="num" id="m">—</div><div class="label">минут</div></div>
         <div class="box"><div class="num" id="s">—</div><div class="label">секунд</div></div>
       </div>
-
-      <a class="btn light" id="mapLink" href="https://maps.google.com/?q=Banquet+Hall+Ata+Bishkek" target="_blank" rel="noopener">Открыть карту</a>
     </div>
 
     <div>
@@ -129,7 +145,7 @@
 
   <section class="container reveal">
     <div class="photo">
-      <img loading="lazy" alt="Счастливые молодожёны" src="second.jpg" >
+      <img loading="lazy" alt="Счастливые молодожёны" src="second.jpg">
     </div>
   </section>
 
@@ -139,30 +155,54 @@
     <p class="sign">С уважением и теплом,<br><span class="italic">Asylbek & Begimai</span></p>
   </section>
 
-  <section class="container reveal" style="padding-bottom:72px">
+  <section class="container reveal" style="padding-bottom:24px">
     <div class="photo">
-      <img src="third.jpeg"  alt="Романтичный момент пары" >
+      <img src="third.jpg" alt="Романтичный момент пары">
     </div>
   </section>
 
+  <!-- Анимация «пути» перед локацией -->
+  <div class="route reveal" aria-hidden="true">
+    <svg viewBox="0 0 600 140" preserveAspectRatio="xMidYMid meet">
+      <!-- кривая «маршрута» -->
+      <path d="M20,120 C120,20 280,180 380,60 440,0 520,40 580,20" />
+      <!-- точка-пин в конце -->
+      <circle class="pin" cx="580" cy="20" r="5" />
+    </svg>
+  </div>
+
+  <!-- ЛОКАЦИЯ — маленькая кликабельная картинка по центру -->
+  <section class="container reveal map-section" id="location" style="padding-bottom:72px">
+    <h2 class="section-title themed">Локация</h2>
+    <!-- Положи рядом с index.html файл location.png (скрин/фото места) -->
+    <a class="map-card" href="https://maps.app.goo.gl/g4c4i15C5P3zJkw56" target="_blank" rel="noopener">
+      <img src="location.png" alt="Banquet Hall «Ata» — открыть на карте">
+    </a>
+  </section>
+
   <script>
-    // ===== Scroll reveal
+    // Reveal on scroll (также триггерит анимацию пути)
     const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('show');
+          io.unobserve(e.target);
+        }
+      });
     },{threshold:0.15});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    // ===== Countdown
+    // Countdown
     const eventDate = new Date('2025-10-09T17:00:00+06:00');
     const $d = document.getElementById('d'), $h=document.getElementById('h'), $m=document.getElementById('m'), $s=document.getElementById('s');
     function tick(){
       const now = new Date();
       let t = eventDate - now;
-      if(t < 0) t = 0;
+      if (t < 0) t = 0;
       const days = Math.floor(t/86400000);
       const hours = Math.floor((t%86400000)/3600000);
-      const mins = Math.floor((t%3600000)/60000);
-      const secs = Math.floor((t%60000)/1000);
+      const mins  = Math.floor((t%3600000)/60000);
+      const secs  = Math.floor((t%60000)/1000);
       $d.textContent = String(days);
       $h.textContent = String(hours).padStart(2,'0');
       $m.textContent = String(mins).padStart(2,'0');
@@ -170,19 +210,18 @@
     }
     tick(); setInterval(tick, 1000);
 
-    // ===== Calendar (RU, Monday-first)
+    // Calendar (RU, Monday-first)
     const calEl = document.getElementById('calendar');
     const markDate = new Date('2025-10-09T00:00:00+06:00');
     const year = markDate.getFullYear();
     const month = markDate.getMonth();
-
     const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
     const dow = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
 
     function buildCalendar(y,m){
       const first = new Date(y,m,1);
-      const last = new Date(y,m+1,0);
-      const firstDay = (first.getDay() + 6) % 7; 
+      const last  = new Date(y,m+1,0);
+      const firstDay = (first.getDay() + 6) % 7; // Monday=0
       const totalDays = last.getDate();
 
       const head = document.createElement('div');
@@ -199,7 +238,6 @@
       for(let i=0;i<firstDay;i++){
         const empty = document.createElement('div'); empty.className='day empty'; grid.appendChild(empty);
       }
-
       for(let d=1; d<=totalDays; d++){
         const el = document.createElement('div'); el.className='day';
         const span = document.createElement('span'); span.className='d'; span.textContent = d;
@@ -211,9 +249,7 @@
       wrap.appendChild(head); wrap.appendChild(grid);
       return wrap;
     }
-
     calEl.appendChild(buildCalendar(year, month));
   </script>
 </body>
 </html>
-
