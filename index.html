@@ -34,14 +34,14 @@
     .amp{ padding:0 .4ch; color:var(--gold) }
     .meta{ margin-top:8px; color:var(--muted); font-size:clamp(14px,3.6vw,17px) }
 
-    /* Photos — без обрезки, высота по изображению */
+    /* Photos — твои размеры */
     .photo{
       position:relative; overflow:hidden;
       border-radius:18px; box-shadow:0 6px 24px rgba(0,0,0,.08);
       background:#fafafa;
-        margin:12px auto 0;
-      height: 400px;
-      width: 300px;
+      margin:12px auto 0;
+      height:500px;
+      width:400px;
     }
     .photo img{
       display:block; width:100%; height:auto;
@@ -72,27 +72,73 @@
     .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease }
     .reveal.show{ opacity:1; transform:none }
 
-    /* === Локация: отдельный контейнер + анимация пути === */
-    .section-title{ font-family:"Playfair Display",serif; font-weight:700; color:var(--gold) }
+    /* === Локация: бесконечная дорожка, 2 кометы и машинка === */
+    .section-title{ font-family:"Playfair Display",serif; font-weight:700; color:var(--gold); margin-top:6px; }
 
-    .route{ padding:8px 0 0; }
-    .route svg{ width:100%; height:140px; display:block; }
+    .route{ position:relative; padding:0; margin:12px 0 0; }
+    .route svg{ width:100%; height:190px; display:block; overflow:visible; }
+
+    /* линия — бесконечное рисование/стирание */
     .route path{
-      fill:none; stroke:var(--gold); stroke-width:2.5;
+      fill:none; stroke:url(#goldStroke); stroke-width:3;
       stroke-linecap:round; stroke-linejoin:round;
-      stroke-dasharray:520; stroke-dashoffset:520;
+      stroke-dasharray:1000; stroke-dashoffset:1000;
+      filter: drop-shadow(0 2px 6px rgba(197,162,94,.35));
     }
-    .route.show path{ animation:dash 1.6s ease forwards; }
-    @keyframes dash{ to{ stroke-dashoffset:0; } }
-    .route .pin{ fill:var(--gold); opacity:0; transform:translateY(4px); }
-    .route.show .pin{ animation:pinFade .8s ease .9s forwards; }
-    @keyframes pinFade{ to{ opacity:1; transform:translateY(0); } }
+    .route.show path{ animation:drawLoop 4s ease-in-out infinite; }
+    @keyframes drawLoop{
+      0%   { stroke-dashoffset:1000; }
+      50%  { stroke-dashoffset:0; }
+      100% { stroke-dashoffset:-1000; }
+    }
 
+    /* кометы и искры (левая/центральная) */
+    .route .comet, .route .spark{
+      position:absolute; top:0; left:0;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, #fff, #FFDFA6 45%, #C5A25E 70%, transparent 72%);
+      filter: blur(.2px) drop-shadow(0 0 10px #c5a25e);
+      width:12px; height:12px; opacity:0;
+    }
+    .route .spark{ width:6px; height:6px; filter: blur(.3px) drop-shadow(0 0 6px #c5a25e); opacity:.9; }
+
+    /* дублируем кометы для правой стороны (слегка смещаем) */
+    .route .comet.r, .route .spark.r{ transform: translateX(10px); }
+
+    /* движение по пути — бесконечно */
+    @supports (offset-path: path("M0,0 L100,100")){
+      .route .comet, .route .spark{
+        offset-path: path("M150,0 C90,35 210,65 150,100 C115,125 185,145 150,175");
+        offset-rotate: auto;
+      }
+      .route.show .comet      { animation:travel 4s linear infinite; }
+      .route.show .spark.s1   { animation:travel 4.2s linear infinite .15s; }
+      .route.show .spark.s2   { animation:travel 4.4s linear infinite .3s; }
+      .route.show .comet.r    { animation:travel 4.6s linear infinite .6s; }
+      .route.show .spark.s1.r { animation:travel 4.8s linear infinite .75s; }
+      .route.show .spark.s2.r { animation:travel 5.0s linear infinite .9s; }
+    }
+    @keyframes travel{
+      0%{ offset-distance:0%; opacity:0 }
+      10%{ opacity:1 }
+      90%{ opacity:1 }
+      100%{ offset-distance:100%; opacity:0 }
+    }
+
+    /* пульсирующий пин (тоже бесконечно) */
+    .route .pin{ fill:#C5A25E; opacity:0; transform-origin:center; }
+    .route.show .pin{
+      animation: pinPop .6s ease .8s forwards, pulse 1.6s ease-in-out 1.6s infinite;
+    }
+    @keyframes pinPop{ 0%{transform:scale(.4);opacity:0}70%{transform:scale(1.15);opacity:1}100%{transform:scale(1)} }
+    @keyframes pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+
+    /* карточка карты */
     .map-card{
       position:relative;
-      width:min(60%, 200px);    /* маленькая карточка */
+      width:min(60%, 200px);
       aspect-ratio:4/3;
-      margin:12px auto 0;       /* по центру */
+      margin:12px auto 0;
       border:1px solid var(--line);
       border-radius:14px;
       overflow:hidden;
@@ -101,10 +147,7 @@
       transition:transform .15s ease;
       display:block;
     }
-    .map-card img{
-      display:block; width:100%; height:100%;
-      object-fit:cover;
-    }
+    .map-card img{ display:block; width:100%; height:100%; object-fit:cover; }
     .map-card:hover{ transform:translateY(-1px) }
     .map-card:active{ transform:translateY(0) }
     .map-card::after{
@@ -113,6 +156,28 @@
       padding:6px 10px; border-radius:10px;
       background:rgba(17,17,17,.7); color:#fff; font-size:12px; font-weight:600;
       box-shadow:0 4px 16px rgba(0,0,0,.2);
+    }
+
+    /* дорога и машинка под локацией */
+    .road{
+      width:min(60%, 200px);
+      margin:10px auto 0;
+      height:28px;
+      position:relative;
+    }
+    .road::before{
+      content:""; position:absolute; left:0; right:0; top:50%;
+      height:2px; background:linear-gradient(90deg,#ddd 40%, transparent 0) 0/16px 2px repeat-x;
+      transform:translateY(-50%);
+    }
+    .car{
+      position:absolute; top:50%; transform:translate(-50%,-55%);
+      font-size:18px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+      animation:drive 6s linear infinite;
+    }
+    @keyframes drive{
+      0%   { left:-8%; }
+      100% { left:108%; }
     }
   </style>
 </head>
@@ -123,7 +188,7 @@
     <p class="sub italic">Мы будем счастливы видеть вас в этот особенный день</p>
   </header> 
 
-<section class="container count-wrap reveal" id="countdown">
+  <section class="container count-wrap reveal" id="countdown">
     <div>
       <h2>До свадьбы осталось</h2>
       <div class="count-grid" aria-live="polite">
@@ -134,11 +199,11 @@
       </div>
     </div>
 
-  <section class="container reveal">
-    <div class="photo">
-      <img loading="lazy" alt="Пара на предсвадебной фотосессии" src="first.jpg">
-    </div>
-  </section>
+    <section class="container reveal">
+      <div class="photo">
+        <img loading="lazy" alt="Пара на предсвадебной фотосессии" src="first.jpg">
+      </div>
+    </section>
 
     <div>
       <h2>Календарь</h2>
@@ -164,29 +229,52 @@
     </div>
   </section>
 
-  <!-- Анимация «пути» перед локацией -->
-  <div class="route reveal" aria-hidden="true">
-    <svg viewBox="0 0 600 140" preserveAspectRatio="xMidYMid meet">
-      <path d="M20,120 C120,20 280,180 380,60 440,0 520,40 580,20" />
-      <circle class="pin" cx="580" cy="20" r="5" />
-    </svg>
-  </div>
-
-  <!-- ЛОКАЦИЯ — маленькая кликабельная картинка по центру -->
+  <!-- ЛОКАЦИЯ — бесконечная дорожка, 2 кометы и машинка -->
   <section class="container reveal" id="location" style="padding-bottom:72px">
+    <!-- Путь сверху вниз к слову "Локация" (бесконечный) -->
+    <div class="route reveal" aria-hidden="true">
+      <svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="goldStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#EAD7A1"/>
+            <stop offset="50%"  stop-color="#C5A25E"/>
+            <stop offset="100%" stop-color="#9C7C3A"/>
+          </linearGradient>
+        </defs>
+        <!-- изящная кривая сверху вниз -->
+        <path d="M150,0 C90,35 210,65 150,100 C115,125 185,145 150,175" />
+        <!-- финишный пин -->
+        <circle class="pin" cx="150" cy="175" r="5"/>
+      </svg>
+      <!-- кометы: центральная и немного правее -->
+      <span class="comet"></span>
+      <span class="spark s1"></span>
+      <span class="spark s2"></span>
+
+      <span class="comet r"></span>
+      <span class="spark s1 r"></span>
+      <span class="spark s2 r"></span>
+    </div>
+
     <h2 class="section-title">Локация</h2>
+
     <a class="map-card" href="https://maps.app.goo.gl/g4c4i15C5P3zJkw56" target="_blank" rel="noopener">
       <img src="location.png" alt="Banquet Hall «Ata» — открыть на карте">
     </a>
+
+    <!-- дорога и машинка -->
+    <div class="road">
+      <span class="car">🚗</span>
+    </div>
   </section>
 
   <script>
-    // Reveal on scroll (триггерит и анимацию пути)
-    const io = new IntersectionObserver((entries)=>{
+    // Reveal on scroll (запускает анимации)
+    const io = new IntersectionObserver((entries)=> {
       entries.forEach(e=>{
         if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
       });
-    },{threshold:0.15});
+    }, {threshold:0.15});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
     // Countdown
@@ -250,4 +338,3 @@
   </script>
 </body>
 </html>
-
