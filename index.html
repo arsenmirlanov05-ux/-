@@ -26,7 +26,6 @@
     .sub{ color:var(--muted); font-size:clamp(14px,3.4vw,16px) }
     .italic{ font-family:"Playfair Display",serif; font-style:italic; color:var(--gold) }
     p{ margin:12px 0 0; font-size:clamp(15px,3.8vw,17px); color:#222 }
-    .section-title.themed{ font-family:"Playfair Display",serif; font-weight:700; color:var(--gold); letter-spacing:.4px }
 
     /* Header */
     .hero{ padding:56px 0 40px }
@@ -40,6 +39,9 @@
       position:relative; overflow:hidden;
       border-radius:18px; box-shadow:0 6px 24px rgba(0,0,0,.08);
       background:#fafafa;
+        margin:12px auto 0;
+      height: 500px;
+      width: 400px;
     }
     .photo img{
       display:block; width:100%; height:auto;
@@ -70,8 +72,9 @@
     .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease }
     .reveal.show{ opacity:1; transform:none }
 
-    /* === Локация: отдельный контейнер для карты/картинки === */
-    .map-section{ }
+    /* === Локация: отдельный контейнер + анимация пути === */
+    .section-title{ font-family:"Playfair Display",serif; font-weight:700; color:var(--gold) }
+
     .route{ padding:8px 0 0; }
     .route svg{ width:100%; height:140px; display:block; }
     .route path{
@@ -87,20 +90,20 @@
 
     .map-card{
       position:relative;
-      width:min(60%, 200px);    /* компактная карточка по центру */
+      width:min(60%, 200px);    /* маленькая карточка */
       aspect-ratio:4/3;
-      margin:12px auto 0;       /* выравнивание по центру */
+      margin:12px auto 0;       /* по центру */
       border:1px solid var(--line);
       border-radius:14px;
       overflow:hidden;
       background:#fafafa;
       box-shadow:0 6px 24px rgba(0,0,0,.06);
       transition:transform .15s ease;
-      display:block;            /* чтобы margin: auto работал у <a> */
+      display:block;
     }
     .map-card img{
       display:block; width:100%; height:100%;
-      object-fit:cover;         /* скрин/фото карты заполнит карточку */
+      object-fit:cover;
     }
     .map-card:hover{ transform:translateY(-1px) }
     .map-card:active{ transform:translateY(0) }
@@ -118,15 +121,9 @@
     <div class="names"><span>Asylbek</span><span class="amp">&</span><span>Begimai</span></div>
     <div class="meta">9 октября 2025 · Banquet Hall «Ata», Бишкек</div>
     <p class="sub italic">Мы будем счастливы видеть вас в этот особенный день</p>
-  </header>
+  </header> 
 
-  <section class="container reveal">
-    <div class="photo">
-      <img loading="lazy" alt="Пара на предсвадебной фотосессии" src="first.jpg">
-    </div>
-  </section>
-
-  <section class="container count-wrap reveal" id="countdown">
+<section class="container count-wrap reveal" id="countdown">
     <div>
       <h2>До свадьбы осталось</h2>
       <div class="count-grid" aria-live="polite">
@@ -136,6 +133,12 @@
         <div class="box"><div class="num" id="s">—</div><div class="label">секунд</div></div>
       </div>
     </div>
+
+  <section class="container reveal">
+    <div class="photo">
+      <img loading="lazy" alt="Пара на предсвадебной фотосессии" src="first.jpg">
+    </div>
+  </section>
 
     <div>
       <h2>Календарь</h2>
@@ -164,30 +167,24 @@
   <!-- Анимация «пути» перед локацией -->
   <div class="route reveal" aria-hidden="true">
     <svg viewBox="0 0 600 140" preserveAspectRatio="xMidYMid meet">
-      <!-- кривая «маршрута» -->
       <path d="M20,120 C120,20 280,180 380,60 440,0 520,40 580,20" />
-      <!-- точка-пин в конце -->
       <circle class="pin" cx="580" cy="20" r="5" />
     </svg>
   </div>
 
   <!-- ЛОКАЦИЯ — маленькая кликабельная картинка по центру -->
-  <section class="container reveal map-section" id="location" style="padding-bottom:72px">
-    <h2 class="section-title themed">Локация</h2>
-    <!-- Положи рядом с index.html файл location.png (скрин/фото места) -->
+  <section class="container reveal" id="location" style="padding-bottom:72px">
+    <h2 class="section-title">Локация</h2>
     <a class="map-card" href="https://maps.app.goo.gl/g4c4i15C5P3zJkw56" target="_blank" rel="noopener">
       <img src="location.png" alt="Banquet Hall «Ata» — открыть на карте">
     </a>
   </section>
 
   <script>
-    // Reveal on scroll (также триггерит анимацию пути)
+    // Reveal on scroll (триггерит и анимацию пути)
     const io = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{
-        if(e.isIntersecting){
-          e.target.classList.add('show');
-          io.unobserve(e.target);
-        }
+        if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
       });
     },{threshold:0.15});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
