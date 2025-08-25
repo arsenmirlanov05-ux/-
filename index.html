@@ -64,18 +64,30 @@
 
     /* Photos */
     /* Photos — серая мягкая тень */
+/* Photos — с ПОТРЯСНОЙ серой тенью */
 .photo{
   position:relative; overflow:hidden;
   border-radius:18px;
-  background:#fafafa;
+  background:#fff;                 /* белый фон — тень заметнее */
   margin:12px auto 0;
   height:400px; width:300px;
 
-  /* новая выраженная серая тень */
+  /* выраженная многоуровневая тень */
   box-shadow:
-    0 14px 28px rgba(0,0,0,.18),
-    0 6px 12px rgba(0,0,0,.10);
+    0 30px 70px rgba(0,0,0,.38),
+    0 14px 28px rgba(0,0,0,.28),
+    0  3px 10px rgba(0,0,0,.18);
+  transition: box-shadow .25s ease;
 }
+
+.photo:hover{
+  /* чуть усиливаем при ховере */
+  box-shadow:
+    0 40px 90px rgba(0,0,0,.42),
+    0 18px 36px rgba(0,0,0,.30),
+    0  4px 14px rgba(0,0,0,.20);
+}
+
 
     .photo img{ display:block; width:100%; height:auto; object-fit:contain; transition:transform .6s ease }
     .photo:hover img{ transform:scale(1.01) }
@@ -390,4 +402,5 @@
   </script>
 </body>
 </html>
+
 
