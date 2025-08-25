@@ -63,11 +63,20 @@
     .rotator-plain.show{ opacity:1; transform:none }
 
     /* Photos */
-    .photo{
-      position:relative; overflow:hidden;
-      border-radius:18px; box-shadow:0 6px 24px rgba(0,0,0,.08);
-      background:#fafafa; margin:12px auto 0; height:400px; width:300px;
-    }
+    /* Photos — серая мягкая тень */
+.photo{
+  position:relative; overflow:hidden;
+  border-radius:18px;
+  background:#fafafa;
+  margin:12px auto 0;
+  height:400px; width:300px;
+
+  /* новая выраженная серая тень */
+  box-shadow:
+    0 14px 28px rgba(0,0,0,.18),
+    0 6px 12px rgba(0,0,0,.10);
+}
+
     .photo img{ display:block; width:100%; height:auto; object-fit:contain; transition:transform .6s ease }
     .photo:hover img{ transform:scale(1.01) }
 
@@ -381,3 +390,4 @@
   </script>
 </body>
 </html>
+
