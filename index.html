@@ -47,13 +47,11 @@
       height: 320px; /* на телефоне */
     }
     .photo img{
-      display:block;
-      width:100%;
-      height:100%;
-      object-fit:cover;   /* картинка не растянется, а аккуратно обрежется */
-      transform:scale(1.02);
-      transition:transform .8s ease;
-    }
+  display:block;
+  width:100%;   /* по ширине телефона */
+  height:auto;  /* высота сама подстраивается */
+}
+
     .photo:hover img{transform:scale(1.06)}
     @media (min-width:900px){
       .photo{height:480px;} /* на больших экранах выше */
@@ -218,3 +216,4 @@
   </script>
 </body>
 </html>
+
