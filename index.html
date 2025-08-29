@@ -8,26 +8,36 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
   <style>
-    :root{ --bg:#ffffff; --fg:#111; --muted:#666; --gold:#C5A25E; --line:#eee; }
+    :root{
+      --bg:#ffffff; --fg:#111; --muted:#000; --gold:#C5A25E; --line:#eee;
+      --accent:#000; --accent-2:#000;
+      --gold-2:#EAD7A1; --gold-3:#C5A25E;
+      --gold-glow: 0 1px 0 #fff, 0 0 14px rgba(197,162,94,.18);
+    }
     *{ box-sizing:border-box }
     html,body{ height:100% }
-    body{ margin:0; font-family:Inter,system-ui,Arial,sans-serif; color:var(--fg); background:var(--bg); }
+    body{
+      margin:0; font-family:Inter,system-ui,Arial,sans-serif; color:var(--fg);
+      /* почти незаметный светлый градиент */
+      background: linear-gradient(180deg, #ffffff 0%, #ffffff 75%, #fefefe 100%);
+      background-attachment: fixed;
+    }
 
     .container{ width:min(92vw,720px); margin:0 auto }
     section{ padding:48px 0; border-top:1px solid var(--line) }
     section:first-of-type{ border-top:0 }
     .container, section, .hero { text-align:center; }
 
-    h1,h2,h3{ margin:0 0 16px; line-height:1.15 }
+    h1,h2,h3{ margin:0 0 16px; line-height:1.15; color:#000 }
     h1{ font-family:"Playfair Display",serif; font-weight:700; font-size:clamp(28px,8vw,60px) }
     h2{ font-family:"Playfair Display",serif; font-weight:700; font-size:clamp(22px,5.4vw,32px) }
     .sub{ color:var(--muted); font-size:clamp(14px,3.4vw,16px) }
     .italic{ font-family:"Playfair Display",serif; font-style:italic; color:var(--gold) }
-    p{ margin:12px 0 0; font-size:clamp(15px,3.8vw,17px); color:#222 }
+    p{ margin:12px 0 0; font-size:clamp(15px,3.8vw,17px); color:#000 }
 
     /* Header */
     .hero{ padding:48px 0 14px }
-    .names{ font-size:clamp(30px,8.4vw,56px); font-family:"Playfair Display",serif; letter-spacing:.5px }
+    .names{ font-size:clamp(30px,8.4vw,56px); font-family:"Playfair Display",serif; letter-spacing:.5px; color:#000 }
     .names span{ display:inline-block }
     .amp{ padding:0 .4ch; color:var(--gold) }
 
@@ -35,9 +45,10 @@
     .wedding-tag{
       font-family:"Playfair Display",serif; font-style:italic; color:var(--gold);
       font-weight:700; letter-spacing:.3px; font-size:clamp(26px,7vw,46px);
+      text-shadow:0 1px 0 #fff, 0 0 18px rgba(197,162,94,.22);
     }
 
-    /* хаотичные мигающие звёзды вокруг слова "Свадьба" */
+    /* звёзды */
     .wedding-wrap .star{
       position:absolute; border-radius:50%;
       width:8px; height:8px;
@@ -50,148 +61,123 @@
     .wedding-wrap .star.s3{ width:10px; height:10px; animation-duration:3.1s }
     @keyframes twinkle{ 0%,100%{opacity:.35;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
 
-    /* крутилка: дата/время/адрес без капсулы */
+    /* ротатор */
     .rotator-plain{
-      margin:6px 0 6px;
-      font-weight:800;
-      font-size:clamp(18px,5.8vw,30px);
-      letter-spacing:.2px;
-      min-height:1.35em;
+      margin:6px 0 6px; font-weight:800; color:#000;
+      font-size:clamp(18px,5.8vw,30px); letter-spacing:.2px; min-height:1.35em;
       opacity:0; transform:translateY(6px);
       transition:opacity .45s ease, transform .45s ease;
     }
-    .rotator-plain.show{ opacity:1; transform:none }
+    .rotator-plain.in{ opacity:1; transform:none }
 
-    /* Photos */
-    /* Photos — серая мягкая тень */
-/* Photos — с ПОТРЯСНОЙ серой тенью */
-.photo{
-  position:relative; overflow:hidden;
-  border-radius:18px;
-  background:#fff;                 /* белый фон — тень заметнее */
-  margin:12px auto 0;
-  height:400px; width:300px;
-
-  /* выраженная многоуровневая тень */
-  box-shadow:
-    0 30px 70px rgba(0,0,0,.38),
-    0 14px 28px rgba(0,0,0,.28),
-    0  3px 10px rgba(0,0,0,.18);
-  transition: box-shadow .25s ease;
-}
-
-.photo:hover{
-  /* чуть усиливаем при ховере */
-  box-shadow:
-    0 40px 90px rgba(0,0,0,.42),
-    0 18px 36px rgba(0,0,0,.30),
-    0  4px 14px rgba(0,0,0,.20);
-}
-
-
+    /* Фото */
+    .photo{
+      position:relative; overflow:hidden; border-radius:18px; background:#fff;
+      margin:12px auto 0; height:400px; width:300px;
+      box-shadow:0 30px 70px rgba(0,0,0,.38), 0 14px 28px rgba(0,0,0,.28), 0 3px 10px rgba(0,0,0,.18);
+      transition: box-shadow .25s ease;
+    }
+    .photo:hover{ box-shadow:0 40px 90px rgba(0,0,0,.42), 0 18px 36px rgba(0,0,0,.30), 0 4px 14px rgba(0,0,0,.20) }
     .photo img{ display:block; width:100%; height:auto; object-fit:contain; transition:transform .6s ease }
     .photo:hover img{ transform:scale(1.01) }
 
     /* Countdown */
     .count-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-top:18px }
-    .box{ background:#fafafa; border:1px solid var(--line); border-radius:14px; padding:14px 8px; text-align:center }
-    .box .num{ font-family:"Playfair Display",serif; font-size:clamp(22px,7vw,34px); font-weight:700 }
-    .box .label{ color:var(--muted); font-size:12px; margin-top:4px }
+    .box{ background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 8px; text-align:center }
+    .box .num{ font-family:"Playfair Display",serif; font-size:clamp(22px,7vw,34px); font-weight:700; color:#000 }
+    .box .label{ color:#000; font-size:12px; margin-top:4px }
 
     /* Calendar */
     .cal{ margin-top:16px; border:1px solid var(--line); border-radius:16px; overflow:hidden }
-    .cal-head{ display:flex; justify-content:center; align-items:center; padding:10px 14px; background:#fafafa; border-bottom:1px solid var(--line) }
-    .cal-title{ font-weight:600 }
+    .cal-head{ display:flex; justify-content:center; align-items:center; padding:10px 14px; background:#fff; border-bottom:1px solid var(--line) }
+    .cal-title{ font-weight:600; color:#000 }
     .cal-grid{ display:grid; grid-template-columns:repeat(7,1fr) }
-    .dow, .day{ padding:10px 0; text-align:center; border-right:1px solid var(--line); border-bottom:1px solid var(--line); font-size:14px }
+    .dow, .day{ padding:10px 0; text-align:center; border-right:1px solid var(--line); border-bottom:1px solid var(--line); font-size:14px; color:#000 }
     .cal-grid > :nth-child(7n){ border-right:0 }
-    .dow{ background:#fcfcfc; color:#777; font-weight:600 }
+    .dow{ background:#fff; font-weight:600 }
     .day.empty{ background:#fff }
     .day .d{ display:inline-block; min-width:2ch }
     .day.mark .d{ background:var(--gold); color:#fff; border-radius:10px; padding:2px 8px; font-weight:700 }
 
-    .reveal{ opacity:0; transform:translateY(16px); transition:opacity .7s ease, transform .7s ease }
-    .reveal.show{ opacity:1; transform:none }
-
-    /* === Локация: дорожка и «кометы» по обеим сторонам === */
-    .section-title{ font-family:"Playfair Display",serif; font-weight:700; color:var(--gold); margin-top:6px; }
-    .route{ position:relative; padding:0; margin:12px 0 0; }
-    .route svg{ width:100%; height:190px; display:block; overflow:visible; }
-    .route path{
-      fill:none; stroke:url(#goldStroke); stroke-width:3; stroke-linecap:round; stroke-linejoin:round;
-      stroke-dasharray:1000; stroke-dashoffset:1000; filter: drop-shadow(0 2px 6px rgba(197,162,94,.35));
+    /* Локация */
+    .section.location{margin-top:clamp(80px,10vw,150px); text-align:center}
+    .h2.loc-title{color:#000; text-transform:uppercase; letter-spacing:.14em; margin:0 0 40px}
+    .loc-card{ max-width:980px; margin:0 auto; display:grid; place-items:center; text-align:center }
+    .loc-venue{font:700 clamp(20px,4vw,26px) 'Playfair Display',serif; line-height:1.32; margin:0 0 12px; color:#000}
+    .loc-venue .accent{color:#000}
+    .loc-address{color:#000; font-size:clamp(15px,2.6vw,19px); line-height:1.5; margin:0 0 24px}
+    .loc-photo{margin:0 auto 26px; border-radius:18px; overflow:hidden; aspect-ratio:16/9; background:#fff; max-width:min(980px,96%); display:block; box-shadow:
+      0 18px 46px rgba(0,0,0,.12), 0 8px 20px rgba(0,0,0,.10), 0 2px 10px rgba(0,0,0,.06); }
+    .loc-photo img{width:100%; height:100%; object-fit:cover; object-position:center center}
+    .loc-btn{
+      display:inline-block; padding:16px 26px; border-radius:999px; background:#000; color:#fff;
+      font-weight:700; letter-spacing:.04em; box-shadow:0 10px 20px rgba(0,0,0,.22);
+      transition:transform .12s ease, box-shadow .2s ease, background .2s ease
     }
-    .route.show path{ animation:drawLoop 4s ease-in-out infinite }
-    @keyframes drawLoop{ 0%{stroke-dashoffset:1000} 50%{stroke-dashoffset:0} 100%{stroke-dashoffset:-1000} }
+    .loc-btn:hover{transform:translateY(-1px); background:#000}
+    .loc-btn:active{transform:translateY(0); box-shadow:0 6px 12px rgba(0,0,0,.18)}
 
-    .route .comet, .route .spark{ position:absolute; top:0; left:0; border-radius:50%; width:12px; height:12px; opacity:0; }
-    .route .comet{ background:radial-gradient(circle at 30% 30%, #fff, #FFDFA6 45%, #C5A25E 70%, transparent 72%); filter: blur(.2px) drop-shadow(0 0 10px #c5a25e) }
-    .route .spark{ width:6px; height:6px; background:radial-gradient(circle, #fff, #C5A25E 60%, transparent 62%); filter: blur(.3px) drop-shadow(0 0 6px #c5a25e); opacity:.9 }
-
-    @supports (offset-path: path("M0,0 L100,100")){
-      .route .move-left{  offset-path: path("M140,0 C80,35 200,65 140,100 C105,125 175,145 140,175"); offset-rotate:auto }
-      .route .move-right{ offset-path: path("M160,0 C100,35 220,65 160,100 C125,125 195,145 160,175"); offset-rotate:auto }
-      .route.show .comet.left     { animation:travel 4.2s linear infinite }
-      .route.show .spark.left.s1  { animation:travel 4.4s linear infinite .12s }
-      .route.show .spark.left.s2  { animation:travel 4.6s linear infinite .24s }
-      .route.show .comet.right    { animation:travel 4.2s linear infinite .6s }
-      .route.show .spark.right.s1 { animation:travel 4.4s linear infinite .72s }
-      .route.show .spark.right.s2 { animation:travel 4.6s linear infinite .84s }
+    /* ХОЗЯЕВА — золотым */
+    .hosts-big{ font-family:"Playfair Display",serif; font-weight:800;
+      font-size:clamp(26px,7.5vw,44px); color:var(--gold); text-shadow:var(--gold-glow); }
+    .hosts-cycle{ position:relative; display:inline-block; white-space:pre }
+    .hosts-cycle.fade{ opacity:0; transition:opacity .5s ease }
+    .hosts-cycle .char{
+      display:inline-block; opacity:0; transform:translateY(6px);
+      animation:hostIn .45s ease forwards; animation-delay: calc(var(--i) * 80ms);
     }
-    @keyframes travel{ 0%{offset-distance:0%;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{offset-distance:100%;opacity:0} }
-    .route .pin{ fill:#C5A25E; opacity:.95; transform-origin:center; animation:pulse 1.6s ease-in-out infinite }
-    @keyframes pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+    @keyframes hostIn{ to{ opacity:1; transform:none } }
 
-    .map-card{
-      position:relative; width:min(60%, 200px); aspect-ratio:4/3; margin:12px auto 0;
-      border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#fafafa;
-      box-shadow:0 6px 24px rgba(0,0,0,.06); transition:transform .15s ease; display:block;
+    /* Фото-футер (золотой градиент поверх фото) */
+    .footer-hero{
+      padding:0; margin-top:60px; min-height:100svh; position:relative;
+      display:grid; place-items:center; text-align:center; overflow:hidden; color:#000;
     }
-    .map-card img{ display:block; width:100%; height:100%; object-fit:cover }
-    .map-card:hover{ transform:translateY(-1px) }
-    .map-card:active{ transform:translateY(0) }
-    .map-card::after{
-      content:'Открыть на карте'; position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
-      padding:6px 10px; border-radius:10px; background:rgba(17,17,17,.7); color:#fff; font-size:12px; font-weight:600; box-shadow:0 4px 16px rgba(0,0,0,.2);
+    .footer-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .footer-hero::after{
+      content:""; position:absolute; inset:0;
+      background:
+        linear-gradient(0deg, rgba(255,255,255,0) 35%, rgba(255,255,255,.90) 72%, #fff 100%),
+        linear-gradient(0deg, rgba(197,162,94,.22), rgba(197,162,94,.10) 42%, rgba(197,162,94,0) 70%);
     }
+    .footer-hero .panel{ position:relative; z-index:1; width:min(920px,100%); padding:36px 18px 44px }
+    .footer-eyebrow{ letter-spacing:.18em; text-transform:uppercase; font-weight:700; font-size:13px; color:#000; opacity:.95 }
+    .footer-title{  font:700 clamp(28px,5.6vw,44px) 'Playfair Display',serif; margin:10px 0 6px; color:#000 }
+    .footer-names{  font:800 clamp(30px,6.4vw,50px) 'Playfair Display',serif; color:var(--gold); letter-spacing:.08em; text-shadow:var(--gold-glow);}
+    .legal{ position:relative; z-index:1; text-align:center; color:#000; padding:16px }
 
-    /* hosts */
-    .hosts-label{ margin-top:16px; color:#333; font-weight:600; letter-spacing:.2px }
-    .hosts-big{ font-family:"Playfair Display",serif; color:#1a1a1a; margin-top:6px; font-size:clamp(26px,7.5vw,44px); font-weight:700 }
-    /* ===== Хозяева: бесконечное проявление слева направо ===== *//* ===== Хозяева: по буквам слева-направо, затем общее погашение (бесконечно) ===== */
-.hosts-cycle{
-  position:relative;
-  display:inline-block;
-  white-space:pre;           /* сохраняет пробелы */
-  --step: 80ms;              /* задержка между буквами */
-}
-.hosts-cycle.fade{           /* общее погашение */
-  opacity:0;
-  transition:opacity .5s ease;
-}
-.hosts-cycle .char{
-  display:inline-block;
-  opacity:0;
-  transform:translateX(6px);
-  animation:hostCharIn .45s ease forwards;
-  animation-delay: calc(var(--i) * var(--step)); /* по очереди слева направо */
-}
-/* золото для амперсанда сохранится, т.к. у тебя уже есть .amp { color: var(--gold) } */
-@keyframes hostCharIn{
-  to{ opacity:1; transform:none; }
-}
+    /* SCROLL-REVEAL */
+    :root{ --reveal-distance:16px; --reveal-dur:.7s; --reveal-ease:cubic-bezier(.2,.6,.2,1); }
+    .reveal{ opacity:0; transform:translateY(var(--reveal-distance)); filter:blur(6px); transition:opacity var(--reveal-dur) var(--reveal-ease), transform var(--reveal-dur) var(--reveal-ease), filter calc(var(--reveal-dur)*.8) var(--reveal-ease) }
+    .reveal.in{ opacity:1; transform:none; filter:blur(0) }
+    @media (prefers-reduced-motion: reduce){ .reveal,.reveal.in{ opacity:1; transform:none; filter:none; transition:none } }
 
-
+    /* Кнопка музыки — чёрная */
+    .bgm-toggle{
+      position:fixed;
+      top:calc(16px + env(safe-area-inset-top, 0px));
+      right:calc(16px + env(safe-area-inset-right, 0px));
+      z-index:9999;
+      width:56px; height:56px; border-radius:999px;
+      display:grid; place-items:center; cursor:pointer;
+      border:1px solid #000;
+      background:linear-gradient(180deg,#000,#111);
+      color:#fff; font-weight:700; font-size:16px;
+      box-shadow:0 10px 20px rgba(0,0,0,.25);
+      -webkit-tap-highlight-color: transparent;
+      transition:transform .15s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .bgm-toggle:hover{ transform:translateY(-1px) }
+    .bgm-toggle.on{ outline:2px solid rgba(0,0,0,.25); filter:saturate(1.05) }
+    .bgm-toggle .icon{ line-height:1 }
   </style>
 </head>
 <body>
   <header class="hero container reveal">
-      <div class="names"><span>Asylbek</span><span class="amp">&</span><span>Begimai</span></div>
+    <div class="names"><span>Asylbek</span><span class="amp">&</span><span>Begimai</span></div>
 
-    <!-- слово + хаотичные звёзды вокруг -->
     <div class="wedding-wrap">
       <div class="wedding-tag">Wedding Day</div>
-      <!-- позиции звёзд (произвольно вокруг текста) -->
       <span class="star s2" style="left:-26px; top:-14px"></span>
       <span class="star s3" style="left: 12px; top:-22px"></span>
       <span class="star s2" style="right:-18px; top:-10px"></span>
@@ -200,10 +186,9 @@
       <span class="star s2" style="left:30%; top:-28px"></span>
       <span class="star s2" style="right:20%; bottom:-22px"></span>
     </div>
-  </header> 
+  </header>
 
   <section class="container count-wrap reveal" id="countdown">
-    <!-- РОТАТОР: дата → время → адрес (без капсулы) -->
     <div id="rotPlain" class="rotator-plain">9 октября 2025</div>
 
     <div>
@@ -234,13 +219,24 @@
     </div>
   </section>
 
+  <!-- ЛОКАЦИЯ -->
+  <section class="section location reveal">
+    <h2 class="h2 loc-title">ЛОКАЦИЯ</h2>
+    <div class="loc-card">
+      <div class="loc-text">
+        <div class="loc-venue">Banket Hall <span class="accent">«ATA»</span></div>
+        <div class="loc-address">Бишкек , Улица Мадиева, 22Б6</div>
+      </div>
+      <div class="loc-photo"><img src="location.png" alt="Зал ресторана «ATA»" loading="lazy"></div>
+      <a class="loc-btn" href="https://go.2gis.com/M5tjs" target="_blank" rel="noopener">Открыть на карте</a>
+    </div>
+  </section>
+
   <section class="container reveal">
     <h2 class="italic">Немного от нас</h2>
     <p class="quote">Этот день — про любовь, семью и людей, которые рядом. Спасибо, что вы — часть нашей истории. Ваша поддержка делает наш праздник по-настоящему тёплым и живым.</p>
- <p class="hosts-label">Хозяева торжества</p>
-<div id="hostsText" class="hosts-big hosts-cycle" data-text="Мекен & Жыпара"></div>
-
-
+    <p class="hosts-label" style="color:#000;font-weight:700">Хозяева торжества</p>
+    <div id="hostsText" class="hosts-big hosts-cycle" data-text="Мекен & Жыпара"></div>
   </section>
 
   <section class="container reveal" style="padding-bottom:24px">
@@ -249,69 +245,51 @@
     </div>
   </section>
 
-  <!-- ЛОКАЦИЯ -->
-  <section class="container reveal" id="location" style="padding-bottom:72px">
-    <div class="route reveal" aria-hidden="true">
-      <svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid meet">
-        <defs>
-          <linearGradient id="goldStroke" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%"   stop-color="#EAD7A1"/>
-            <stop offset="50%"  stop-color="#C5A25E"/>
-            <stop offset="100%" stop-color="#9C7C3A"/>
-          </linearGradient>
-        </defs>
-        <path d="M150,0 C90,35 210,65 150,100 C115,125 185,145 150,175" />
-        <circle class="pin" cx="150" cy="175" r="5"/>
-      </svg>
-
-      <!-- кометы слева -->
-      <span class="comet left move-left"></span>
-      <span class="spark left move-left s1"></span>
-      <span class="spark left move-left s2"></span>
-      <!-- кометы справа -->
-      <span class="comet right move-right"></span>
-      <span class="spark right move-right s1"></span>
-      <span class="spark right move-right s2"></span>
+  <!-- Фото-футер -->
+  <footer class="footer-hero">
+    <img class="footer-img" src="footer.jpeg" alt="" loading="lazy">
+    <div class="panel">
+      <div class="footer-eyebrow">Мы с нетерпением ждём вас в этот особенный вечер.</div>
+      <div class="footer-title">Очень хочется разделить радость и тепло с теми, кто дорог нашему сердцу. Ваше присутствие — лучший подарок для нас.</div>
+      <div class="footer-names">МЕКЕН &amp; ЖЫПАРА</div>
     </div>
+    <div class="legal">© <span id="y"></span></div>
+  </footer>
 
-    <h2 class="section-title">Локация</h2>
-
-    <a class="map-card" href="https://maps.app.goo.gl/g4c4i15C5P3zJkw56" target="_blank" rel="noopener">
-      <img src="location.png" alt="Banquet Hall «Ata» — открыть на карте">
-    </a>
-  </section>
+  <!-- Фоновая музыка -->
+  <audio id="bgm" preload="auto" autoplay playsinline loop>
+    <source src="piano.mp3" type="audio/mpeg">
+  </audio>
+  <!-- Кнопка музыки -->
+  <button class="bgm-toggle" id="bgmToggle" aria-pressed="false" aria-label="Включить музыку">
+    <span class="icon">♫</span>
+  </button>
 
   <script>
     // reveal
     const io = new IntersectionObserver((entries)=> {
       entries.forEach(e=>{
-        if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
       });
     }, {threshold:0.15});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    // Rotator (дата → начало → адрес), без смайликов
+    // Rotator
     const rotPlain = document.getElementById('rotPlain');
-    const slides = ['9 октября 2025','Начало в 17:00','Banquet Hall «Ata», Бишкек'];
-    let r = 1; // следующий после стартового текста
+    const slides = ['9 октября 2025','Начало в 17:00','Banket Hall «ATA», Талас'];
+    let r = 1;
     function rotatePlain(){
-      rotPlain.classList.remove('show');
-      setTimeout(()=>{
-        rotPlain.textContent = slides[r];
-        rotPlain.classList.add('show');
-        r = (r+1) % slides.length;
-      }, 220);
+      rotPlain.classList.remove('in');
+      setTimeout(()=>{ rotPlain.textContent = slides[r]; rotPlain.classList.add('in'); r = (r+1)%slides.length; }, 220);
     }
-    rotPlain.classList.add('show');
+    requestAnimationFrame(()=> rotPlain.classList.add('in'));
     setInterval(rotatePlain, 3000);
 
-    // Countdown — 9 Oct 2025, 17:00 (GMT+6)
+    // Countdown
     const eventDate = new Date('2025-10-09T17:00:00+06:00');
     const $d = document.getElementById('d'), $h=document.getElementById('h'), $m=document.getElementById('m'), $s=document.getElementById('s');
     function tick(){
-      const now = new Date();
-      let t = eventDate - now;
-      if (t < 0) t = 0;
+      const now = new Date(); let t = eventDate - now; if (t < 0) t = 0;
       const days = Math.floor(t/86400000);
       const hours = Math.floor((t%86400000)/3600000);
       const mins  = Math.floor((t%3600000)/60000);
@@ -330,77 +308,95 @@
     const month = markDate.getMonth();
     const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
     const dow = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-
     function buildCalendar(y,m){
       const first = new Date(y,m,1);
       const last  = new Date(y,m+1,0);
-      const firstDay = (first.getDay() + 6) % 7; // Monday=0
+      const firstDay = (first.getDay() + 6) % 7;
       const totalDays = last.getDate();
-
-      const head = document.createElement('div');
-      head.className = 'cal-head';
+      const head = document.createElement('div'); head.className = 'cal-head';
       head.innerHTML = `<div class="cal-title">${monthNames[m]} ${y}</div>`;
-
-      const grid = document.createElement('div');
-      grid.className = 'cal-grid';
-
-      dow.forEach(d=>{
-        const el = document.createElement('div'); el.className='dow'; el.textContent=d; grid.appendChild(el);
-      });
-
-      for(let i=0;i<firstDay;i++){
-        const empty = document.createElement('div'); empty.className='day empty'; grid.appendChild(empty);
-      }
+      const grid = document.createElement('div'); grid.className = 'cal-grid';
+      dow.forEach(d=>{ const el = document.createElement('div'); el.className='dow'; el.textContent=d; grid.appendChild(el); });
+      for(let i=0;i<firstDay;i++){ const empty = document.createElement('div'); empty.className='day empty'; grid.appendChild(empty); }
       for(let d=1; d<=totalDays; d++){
         const el = document.createElement('div'); el.className='day';
         const span = document.createElement('span'); span.className='d'; span.textContent = d;
         if(d === markDate.getDate()) el.classList.add('mark');
         el.appendChild(span); grid.appendChild(el);
       }
-
-      const wrap = document.createElement('div');
-      wrap.appendChild(head); wrap.appendChild(grid);
-      return wrap;
+      const wrap = document.createElement('div'); wrap.appendChild(head); wrap.appendChild(grid); return wrap;
     }
     calEl.appendChild(buildCalendar(year, month));
 
-    // ===== Мекен & Жыпара: цикличное появление по буквам и общее погашение =====
-(function(){
-  const el = document.getElementById('hostsText');
-  if(!el) return;
+    // Хозяева — анимация
+    (function(){
+      const el = document.getElementById('hostsText'); if(!el) return;
+      const text = el.dataset.text || el.textContent.trim();
+      const STEP_MS=80, CHAR_DUR=450, HOLD_MS=1400, FADE_MS=500;
+      function buildCycle(){
+        el.classList.remove('fade'); el.innerHTML = ''; el.style.setProperty('--step', STEP_MS + 'ms');
+        [...text].forEach((ch, i) => {
+          const span = document.createElement('span');
+          span.className = 'char' + (ch === '&' ? ' amp' : '');
+          span.style.setProperty('--i', i); span.textContent = ch; el.appendChild(span);
+        });
+        const totalReveal = STEP_MS * (text.length - 1) + CHAR_DUR + HOLD_MS;
+        setTimeout(() => el.classList.add('fade'), totalReveal);
+        setTimeout(buildCycle, totalReveal + FADE_MS + 200);
+      }
+      buildCycle();
+    })();
 
-  const text = el.dataset.text || el.textContent.trim(); // "Мекен & Жыпара"
-  const STEP_MS   = 80;   // шаг между буквами
-  const CHAR_DUR  = 450;  // длительность анимации одной буквы (ms)
-  const HOLD_MS   = 1400; // пауза, когда весь текст виден
-  const FADE_MS   = 500;  // общее погашение
+    // Год в футере
+    document.getElementById('y').textContent = new Date().getFullYear();
 
-  function buildCycle(){
-    // сброс
-    el.classList.remove('fade');
-    el.innerHTML = '';                 // заново строим по буквам
-    el.style.setProperty('--step', STEP_MS + 'ms');
+    /* ===== МУЗЫКА: автозапуск + чёрный тоггл ===== */
+    (function(){
+      const audio = document.getElementById('bgm');
+      const btn   = document.getElementById('bgmToggle');
+      if(!audio || !btn) return;
 
-    // разложить на символы
-    [...text].forEach((ch, i) => {
-      const span = document.createElement('span');
-      span.className = 'char' + (ch === '&' ? ' amp' : '');
-      span.style.setProperty('--i', i);
-      span.textContent = ch;
-      el.appendChild(span);
-    });
+      audio.volume = 0.65;
+      btn.dataset.state = 'off';
 
-    // когда всё появится — погасить целиком и повторить
-    const totalReveal = STEP_MS * (text.length - 1) + CHAR_DUR + HOLD_MS;
-    setTimeout(() => el.classList.add('fade'), totalReveal);
-    setTimeout(buildCycle, totalReveal + FADE_MS + 200); // бесконечный цикл
-  }
+      function setBtn(on){
+        btn.classList.toggle('on', on);
+        btn.setAttribute('aria-pressed', on);
+        btn.title = on ? 'Выключить музыку' : 'Включить музыку';
+        btn.querySelector('.icon').textContent = on ? '🔊' : '♫';
+        btn.dataset.state = on ? 'on' : 'off';
+      }
 
-  buildCycle();
-})();
+      async function tryPlay(){
+        try{ audio.muted = false; await audio.play(); setBtn(true); return true; }
+        catch(e){ setBtn(false); return false; }
+      }
 
+      if (document.readyState === 'complete' || document.readyState === 'interactive'){
+        tryPlay();
+      } else {
+        document.addEventListener('DOMContentLoaded', tryPlay, {once:true});
+      }
+
+      const unlock = async ()=>{
+        const ok = await tryPlay();
+        if(ok){
+          window.removeEventListener('click', unlock, {passive:true});
+          window.removeEventListener('touchend', unlock, {passive:true});
+          window.removeEventListener('keydown', unlock, {passive:true});
+        }
+      };
+      window.addEventListener('click', unlock, {passive:true});
+      window.addEventListener('touchend', unlock, {passive:true});
+      window.addEventListener('keydown', unlock, {passive:true});
+
+      document.addEventListener('visibilitychange', ()=>{ if (!document.hidden && audio.paused) tryPlay(); });
+
+      btn.addEventListener('click', ()=>{
+        if(audio.paused){ tryPlay(); }
+        else{ audio.pause(); setBtn(false); }
+      });
+    })();
   </script>
 </body>
 </html>
-
-
