@@ -208,7 +208,7 @@
     </section>
 
     <div>
-      <h2>Жылнаама</h2>
+      <h2>Календарь</h2>
       <div class="cal" id="calendar" aria-label="Белгиленген күнү бар жылнаама"></div>
     </div>
   </section>
@@ -307,7 +307,7 @@
     const year = markDate.getFullYear();
     const month = markDate.getMonth();
     const monthNames = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
-    const dow = ['Дш','Шш','Шр','Бш','Жм','Иш','Жк']; // Дүйшөмбү...Жекшемби
+    const dow = ['ПН','Вт','Ср','Чт','Пт','Сб','Вс']; // Дүйшөмбү...Жекшемби
 
     function buildCalendar(y,m){
       const first = new Date(y,m,1);
@@ -414,3 +414,4 @@
   </script>
 </body>
 </html>
+
